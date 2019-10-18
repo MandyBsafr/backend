@@ -8,15 +8,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SunshineBand/bsafe-api.git"
+    "url": "git+https://github.com/MandyBsafr/backend.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SunshineBand/bsafe-api/issues"
+    "url": "https://github.com/MandyBsafr/backend/issues"
   },
-  "homepage": "https://github.com/SunshineBand/bsafe-api#readme",
+  "homepage": "https://github.com/MandyBsafr/backend#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.7.5"
+  },
+  "devDependencies": {
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.4"
   }
 }
