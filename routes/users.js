@@ -3,18 +3,6 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/User');
 
-router.get('/:id', async (req, res, next) => {
-  // GET user by id
-  console.log(req.params.id);
-  try {
-    const user = await User.findById(req.params.id);
-    res.send(user);
-  }
-  catch (err) {
-    res.status(500).send(err);
-  }
-})
-
 router.post('/create', async (req, res, next) => {
   // CREATE new user
   const { name, number, contacts, longitude, latitude } = req.body;
@@ -37,13 +25,11 @@ router.post('/create', async (req, res, next) => {
 
   try {
     await user.save();
-    res.send(user);
+    res.send(user.id);
   }
   catch (err) {
     res.status(500).send(err);
   }
-
-  res.send(`Created user: ${user}`);
 })
 
 router.post('/emergency/:id', async (req, res, next) => {
