@@ -7,7 +7,11 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  contact: {
+  number: {
+    type: String,
+    required: true
+  },
+  contacts: {
     type: Array,
     require: true
   }
