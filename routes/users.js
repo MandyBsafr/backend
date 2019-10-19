@@ -28,7 +28,7 @@ router.post('/create', async (req, res, next) => {
 
   try {
     await user.save();
-    res.send(user);
+    res.send(user.id);
   }
   catch (err) {
     res.status(500).send(err);
@@ -61,6 +61,27 @@ router.post('/emergency/:id', async (req, res, next) => {
       console.log(message.sid)
       res.send(message);
     });
+  }
+  catch (err) {
+    res.status(500).send(err);
+  }
+})
+
+router.post('/update-location/:id', async (req, res, next) => {
+  // UPDATE user location
+  // expects JSON with new latitude, longitude
+  const { latitude, longitude } = req.body;
+  try {
+    const user = await User.findById(req.params.id);
+    user.location = {
+      type: 'Point',
+      coordinates: [
+        longitude,
+        latitude
+      ]
+    }
+    await user.save()
+    res.send(user.id)
   }
   catch (err) {
     res.status(500).send(err);
