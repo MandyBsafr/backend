@@ -12,6 +12,12 @@ router.post('/create', async (req, res, next) => {
     contacts: [req.body.contacts]
   });
   console.log(user);
+  try {
+    await user.save();
+  }
+  catch (err) {
+    res.status(500).send(err);
+  }
   // user.contacts = [];
   // user.contacts.push(...req.contacts);
   res.send(`Created user: ${user}`);
