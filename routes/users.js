@@ -3,25 +3,34 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/User');
 
-
 router.post('/create', async (req, res, next) => {
   // CREATE new user
+
   const user = new User({
     name: req.body.name,
     number: req.body.number,
-    contacts: [req.body.contacts]
-  });
-  console.log(user);
+    contacts: [req.body.contacts],
+    location: {
+      type: 'Point',
+      coordinates: [req.body.longitude, req.body.latitude]
+    }
+  })
+
   try {
     await user.save();
+    res.send(user);
   }
   catch (err) {
     res.status(500).send(err);
   }
-  // user.contacts = [];
-  // user.contacts.push(...req.contacts);
+
+  console.log(user);
   res.send(`Created user: ${user}`);
 })
+
+// TODO:
+// SMS ami hookup
+// endpoint for end session / mark for deletion
 
 router.get('/:id', async (req, res, next) => {
   // GET user by id

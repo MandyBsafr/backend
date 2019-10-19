@@ -18,7 +18,7 @@ const userRoutes = require('./routes/users');
 app.get('/', (req, res) => {
   res.send('Bsafe Backend!!!! :D');
 })
-app.use('/user', userRoutes);
+app.use('/users', userRoutes);
 
 
 
