@@ -2,10 +2,17 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const morgan = require('morgan');
-app.use(morgan('dev'))
+const mongoose = require('mongoose');
+require('dotenv').config()
 
+app.use(morgan('dev'))
 app.use(express.json())
 app.use(cors());
+
+mongoose.connect(process.env.DB_HOST, {useUnifiedTopology: true,  useNewUrlParser: true}, (err, success) => {
+  if (err) { return console.error(err) }
+  console.log('Connection Status: Success');
+});
 
 const userRoutes = require('./routes/users');
 
