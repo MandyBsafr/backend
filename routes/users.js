@@ -6,15 +6,23 @@ const User = require('../models/User');
 router.post('/create', async (req, res, next) => {
   // CREATE new user
 
+  const { name, number, contacts, longitude, latitude } = req.body;
+
   const user = new User({
-    name: req.body.name,
-    number: req.body.number,
-    contacts: [req.body.contacts],
-    location: {
-      type: 'Point',
-      coordinates: [req.body.longitude, req.body.latitude]
-    }
+    name: name,
+    number: number,
+    contacts: [contacts]
   })
+
+  if (longitude && latitude) {
+    user.location = {
+      type: 'Point',
+      coordinates: [
+        longitude,
+        latitude
+      ]
+    }
+  }
 
   try {
     await user.save();
@@ -24,7 +32,6 @@ router.post('/create', async (req, res, next) => {
     res.status(500).send(err);
   }
 
-  console.log(user);
   res.send(`Created user: ${user}`);
 })
 
