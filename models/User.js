@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -7,9 +6,22 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  contact: {
+  number: {
+    type: String,
+    required: true
+  },
+  contacts: {
     type: Array,
-    require: true
+    required: true
+  },
+  location: {
+    type: {
+      type: String,
+      default: 'Point'
+    },
+    coordinates: {
+      type: [Number]
+    }
   }
 })
 
