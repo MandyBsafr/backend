@@ -3,7 +3,15 @@ const cors = require('cors');
 const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const moment = require('moment');
+moment().format();
 require('dotenv').config();
+
+// mutates the values
+// const now = moment();
+// const regular = moment('2019-10-19T22:51:00.253Z').format('')
+// regular.isBefore(now)
+// console.log(moment("2019-10-19T22:51:00.253Z"));
 
 app.use(morgan('dev'))
 app.use(express.json())

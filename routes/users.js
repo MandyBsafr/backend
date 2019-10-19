@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const moment = require('moment');
 const User = require('../models/User');
 
 router.post('/create', async (req, res, next) => {
   // CREATE new user
-  const { name, number, contacts, longitude, latitude } = req.body;
+  const { name, number, contacts, checkOut, longitude, latitude } = req.body;
 
   const user = new User({
     name: name,
     number: number,
-    contacts: [contacts]
+    contacts: [contacts],
+    checkIn: moment().utc().format(),
+    checkOut: checkOut
   })
 
   if (longitude && latitude) {
@@ -25,7 +28,7 @@ router.post('/create', async (req, res, next) => {
 
   try {
     await user.save();
-    res.send(user.id);
+    res.send(user);
   }
   catch (err) {
     res.status(500).send(err);
