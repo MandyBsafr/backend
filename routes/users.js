@@ -4,15 +4,34 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 const User = require('../models/User');
 
+const minuteWait = () => {
+  const minute = 60000;
+  return new Promise(resolve => {
+    setTimeout(resolve, minute);
+  });
+};
+
+const sleep = async (minutes) => {
+  for (i = 0; i < minutes; i++) {
+    console.log('waiting');
+    await minuteWait();
+  }
+}
+
 router.post('/create', async (req, res, next) => {
   // CREATE new user
   const { name, number, contacts, checkOut, longitude, latitude } = req.body;
+  const checkIn = moment().utc().format();
+  const now = moment(checkIn);
+  const later = moment(checkOut);
+  const timeToWait = now.diff(later, 'minutes');
+  console.log(timeToWait);
 
   const user = new User({
     name: name,
     number: number,
     contacts: [contacts],
-    checkIn: moment().utc().format(),
+    checkIn: checkIn,
     checkOut: checkOut
   })
 
@@ -29,6 +48,7 @@ router.post('/create', async (req, res, next) => {
   try {
     await user.save();
     res.send(user.id);
+    sleep(timeToWait);
   }
   catch (err) {
     res.status(500).send(err);
@@ -67,7 +87,7 @@ router.post('/emergency/:id', async (req, res, next) => {
   }
 })
 
-router.post('/update-location/:id', async (req, res, next) => {
+router.patch('/update-location/:id', async (req, res, next) => {
   // UPDATE user location
   // expects JSON with new latitude, longitude
   const { latitude, longitude } = req.body;
