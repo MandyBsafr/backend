@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const cors = require('cors');
 const moment = require('moment');
 const User = require('../models/User');
 
@@ -18,7 +19,8 @@ const sleep = async (minutes) => {
   }
 }
 
-router.post('/create', async (req, res, next) => {
+router.post('/create', cors(), async (req, res, next) => {
+  console.log(req.body);
   // CREATE new user
   const { name, number, contacts, checkOut, longitude, latitude } = req.body;
   const checkIn = moment().utc().format();
@@ -46,11 +48,13 @@ router.post('/create', async (req, res, next) => {
   }
 
   try {
-    await user.save();
-    res.send(user.id);
+    console.log(user);
+    const newUser = await user.save();
+    res.send(newUser.id);
     sleep(timeToWait);
   }
   catch (err) {
+    console.log(user);
     res.status(500).send(err);
   }
 })

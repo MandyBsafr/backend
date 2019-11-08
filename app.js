@@ -15,26 +15,26 @@ require('dotenv').config();
 
 // app.use(morgan('dev'))
 app.use(express.json())
-app.use(cors());
 
-const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://PushButtons:admin@cluster0-gvgtm.mongodb.net/test?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true });
-client.connect(err => {
-  const collection = client.db("bsafr_db").collection("users");
-  // perform actions on the collection object
+const corsOptions = {
+  origin: 'http://localhost:8080/',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
+app.use(cors(corsOptions));
 
+const uri = "mongodb+srv://PushButtons:admin@cluster0-gvgtm.mongodb.net/bsafr_db?retryWrites=true&w=majority";
+mongoose.connect(uri, {useUnifiedTopology: true,  useNewUrlParser: true}, (err, success) => {
+  if (err) { return console.error(err) }
+  console.log('Connection Status: Success');
+});
 
 const userRoutes = require('./routes/users');
 
 app.get('/', (req, res) => {
   res.send('Bsafe Backend!!!! :D');
 })
-app.use('/users', userRoutes);
-
-  client.close();
-});
+app.use('/users', userRoutes)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`listening on port: ${PORT}`))
